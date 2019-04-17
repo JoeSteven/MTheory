@@ -4,10 +4,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:remove/i18n/Toast.dart';
 import 'package:remove/i18n/locale_util.dart';
 import 'package:remove/i18n/translations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() => runApp(MyApp());
 
@@ -51,11 +54,13 @@ class _MainPage extends State<MainPage> {
   var isSelected = false;
   var showLoading = false;
   var _img;
+  var _imgName;
   final httpClient = new Dio();
 
   Future _upload() async {
     if (showLoading) return;
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _imgName = image.path.split("/").last;
     print(image);
     setState(() {
       if (_img != image) {
@@ -89,11 +94,40 @@ class _MainPage extends State<MainPage> {
       if (e is DioError) {
         print(e?.response?.data);
       }
+      Toaster.show(e.toString());
     }
 
     setState(() {
       showLoading = false;
     });
+    Toaster.show(localeUtil.getString(context, "remove_success"));
+  }
+
+  Future _download() async {
+    if (showLoading || !(_img is Uint8List)) return;
+    setState(() {
+      showLoading = true;
+    });
+    Uint8List list = _img as Uint8List;
+    String dir;
+    try {
+      dir = (await getExternalStorageDirectory()).path+ "/Pictures";
+    } catch(e) {
+      dir = (await getApplicationDocumentsDirectory()).path;
+    }
+
+    File file = new File("$dir/no_bg_$_imgName");
+    Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    try {
+      file.writeAsBytes(list);
+    } catch(e) {
+
+    }
+    setState(() {
+      showLoading = false;
+    });
+    print(file.path);
+    Toaster.showLong(localeUtil.getString(context, "download_success") + "${file.path}");
   }
 
   Future<Uint8List> consolidateHttpClientResponseBytes(Stream<List<int>> response
@@ -120,15 +154,13 @@ class _MainPage extends State<MainPage> {
     return completer.future;
   }
 
-  void _download() {
-    if (showLoading) return;
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text(localeUtil.getString("title")),
+          title: new Text(localeUtil.getString(context, "title")),
         ),
         body: new Container(
           child: new Column(
@@ -136,7 +168,7 @@ class _MainPage extends State<MainPage> {
             children: <Widget>[
               new Expanded(child: _image(_img)),
               _loadView(),
-              _stateView()
+              _stateView(context)
             ],
           ),
           margin: new EdgeInsets.all(10),
@@ -163,7 +195,7 @@ class _MainPage extends State<MainPage> {
     }
   }
 
-  Row _stateView() {
+  Row _stateView(BuildContext context) {
     if (isSelected) {
       return new Row(children: <Widget>[
         new Expanded(
@@ -172,7 +204,7 @@ class _MainPage extends State<MainPage> {
           color: Colors.blue,
           textColor: Colors.white,
           padding: EdgeInsets.all(10),
-          child: new Text(localeUtil.getString("change_photo")),
+          child: new Text(localeUtil.getString(context,"change_photo")),
         )),
         new Text(" "),
         new Expanded(
@@ -181,7 +213,7 @@ class _MainPage extends State<MainPage> {
                 color: Colors.green,
                 textColor: Colors.white,
                 padding: EdgeInsets.all(10),
-                child: new Text(localeUtil.getString("download_photo"))))
+                child: new Text(localeUtil.getString(context, "download"))))
       ]);
     }
     return new Row(children: <Widget>[
@@ -191,7 +223,7 @@ class _MainPage extends State<MainPage> {
         color: Colors.green,
         textColor: Colors.white,
         padding: EdgeInsets.all(10),
-        child: new Text(localeUtil.getString("upload_photo")),
+        child: new Text(localeUtil.getString(context, "upload_photo")),
       ))
     ]);
   }

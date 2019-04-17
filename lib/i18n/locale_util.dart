@@ -33,8 +33,8 @@ class LocaleUtil {
     return languageCode;
   }
 
-  String getString(String key) {
-    return key;//Translations.of(context).text(key);
+  String getString(BuildContext context, String key) {
+    return Translations.of(context).text(key);
   }
 }
 

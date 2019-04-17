@@ -1,6 +1,8 @@
 {
   "title": "Remove",
-  "upload_photo": "upload",
-  "change_photo": "change",
-  "download": "download"
+  "upload_photo": "Upload",
+  "change_photo": "Change",
+  "download": "Download",
+  "remove_success": "Remove background success!",
+  "download_success": "Download success:"
 }

@@ -23,7 +23,9 @@ dependencies:
   cupertino_icons: ^0.1.2
   image_picker: ^0.5.3+1
   dio: ^2.1.2
-#  permission_handler: ^3.0.0
+  path_provider: ^0.5.0+1
+  permission_handler: any
+  fluttertoast: any
 
 dev_dependencies:
   flutter_test:
