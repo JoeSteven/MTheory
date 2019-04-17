@@ -34,7 +34,7 @@ class LocaleUtil {
   }
 
   String getString(String key) {
-    return Translations.of(context).text(key);
+    return key;//Translations.of(context).text(key);
   }
 }
 
