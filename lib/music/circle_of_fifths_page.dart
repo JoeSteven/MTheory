@@ -17,6 +17,9 @@ class _CircleOfFifthPage extends State<CircleOfFifthPage> {
   var _answerColor = Colors.black;
   var _questionText = CFUtil.randomNote();
 
+  var _rightCount = 0;
+  var _wrongCount = 0;
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -32,6 +35,8 @@ class _CircleOfFifthPage extends State<CircleOfFifthPage> {
               _downInput(),
               _answer(),
               _buttons(),
+              _hint(),
+              _count(),
             ],
           ),
           margin: new EdgeInsets.all(10),
@@ -102,9 +107,11 @@ class _CircleOfFifthPage extends State<CircleOfFifthPage> {
       setState(() {
         _answerColor = Colors.black;
         _answerText = "正确：上行 $up,下行 $down";
+        _rightCount +=1;
       });
     } else {
       setState(() {
+        _wrongCount+=1;
         _answerColor = Colors.red;
         _answerText = "错误：上行 $up,下行 $down";
       });
@@ -119,6 +126,19 @@ class _CircleOfFifthPage extends State<CircleOfFifthPage> {
       _inputUp.clear();
       _inputDown.clear();
     });
+  }
+
+  Text _hint() {
+    return Text("音符均大写，降号小写，无升号");
+  }
+
+  Row _count() {
+    return Row(
+      children: <Widget>[
+        Text("正确:$_rightCount"),
+        Text(" 错误:$_wrongCount", style: TextStyle(color: Colors.red),)
+      ],
+    );
   }
 
 
