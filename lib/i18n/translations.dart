@@ -1,9 +1,9 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:MTheory/i18n/locale_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show  rootBundle;
-import 'package:remove/i18n/locale_util.dart';
 
 /// Class for Translate
 ///

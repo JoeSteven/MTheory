@@ -1,8 +1,8 @@
+import 'package:MTheory/i18n/locale_util.dart';
+import 'package:MTheory/i18n/translations.dart';
+import 'package:MTheory/music/circle_of_fifths_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:remove/i18n/locale_util.dart';
-import 'package:remove/i18n/translations.dart';
-import 'package:remove/music/circle_of_fifths_page.dart';
 
 void main() => runApp(MyApp());
 

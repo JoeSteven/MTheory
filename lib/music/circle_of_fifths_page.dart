@@ -1,6 +1,6 @@
+import 'package:MTheory/music/circle_of_fifths_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:remove/music/circle_of_fifths_util.dart';
 
 class CircleOfFifthPage extends StatefulWidget {
   @override

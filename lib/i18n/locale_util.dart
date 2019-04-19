@@ -1,5 +1,5 @@
+import 'package:MTheory/i18n/translations.dart';
 import 'package:flutter/material.dart';
-import 'package:remove/i18n/translations.dart';
 
 typedef void LocaleChangeCallback(Locale locale);
 class LocaleUtil {
